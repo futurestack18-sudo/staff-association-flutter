@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4 payments-list-container">
+  <h2 class="mb-4 text-center">All Staff Payments</h2>
+
+  <!-- Month-Year Filter Dropdown -->
+  <div class="month-filter-container">
+    <label for="monthFilter" class="form-label fw-semibold">Filter by Month:</label>
+    <select id="monthFilter" class="form-select month-filter-select" aria-label="Filter payments by month and year">
+      <option value="all">All</option>
+      {% for p in payments|sort(attribute='created_on', reverse=True)|unique(attribute='month') %}
+        <option value="{{ p.month }}-{{ p.created_on.strftime('%Y') }}">
+          {{ p.month }} {{ p.created_on.strftime('%Y') }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- Payments Table -->
+  <div class="table-responsive mt-3">
+    <table class="table table-striped table-bordered align-middle" id="paymentsTable">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Staff ID</th>
+          <th>Staff Name</th>
+          <th>Amount (₹)</th>
+          <th>Month</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in payments %}
+        <tr data-monthyear="{{ p.month }}-{{ p.created_on.strftime('%Y') if p.created_on else '' }}">
+          <td class="text-center">{{ p.staff_id }}</td>
+          <td class="text-center">
+            {% set staff = p.staff %}
+            {{ staff.name if staff else 'N/A' }}
+          </td>
+          <td class="text-end fw-bold">₹{{ "%.2f"|format(p.amount) }}</td>
+          <td class="text-center">{{ p.month }}</td>
+          <td class="text-center">{{ p.created_on.strftime('%Y-%m-%d') if p.created_on else '' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if payments|length == 0 %}
+  <div class="alert alert-info mt-3 text-center">No payment records found.</div>
+  {% endif %}
+
+  <div class="text-center mt-4">
+    <a class="btn btn-secondary" href="{{ url_for('routes.admin_dashboard') }}">Back to Dashboard</a>
+  </div>
+</div>
+
+<!-- JS for filtering -->
+<script>
+document.getElementById("monthFilter").addEventListener("change", function() {
+  const selected = this.value;
+  document.querySelectorAll("#paymentsTable tbody tr").forEach(row => {
+    row.style.display = (selected === "all" || row.dataset.monthyear === selected) ? "" : "none";
+  });
+});
+</script>
+{% endblock %}

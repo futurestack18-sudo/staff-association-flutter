@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Loans</h3>
+<table class="table">
+<thead><tr><th>Staff ID</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+<tbody>
+  {% for l in loans %}
+  <tr>
+    <td>{{ l.staff_id }}</td><td>{{ l.amount }}</td><td>{{ l.status }}</td><td>{{ l.requested_on.strftime('%Y-%m-%d') }}</td>
+    <td>
+      <a class="btn btn-success btn-sm" href="{{ url_for('routes.admin_loan_approve', id=l.id) }}">Approve</a>
+      <a class="btn btn-danger btn-sm" href="{{ url_for('routes.admin_loan_reject', id=l.id) }}">Reject</a>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% endblock %}

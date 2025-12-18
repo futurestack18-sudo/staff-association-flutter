@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm p-4">
+        <h3 class="text-center mb-4 fw-semibold">Staff Registration</h3>
+
+        <form method="POST" novalidate>
+          <!-- Staff ID -->
+          <div class="mb-3">
+            <label for="staff_id" class="form-label fw-medium">Staff ID</label>
+            <input type="text" id="staff_id" name="staff_id" 
+                   class="form-control" required 
+                   placeholder="Enter your Staff ID" 
+                   aria-describedby="staffIdHelp">
+            <div id="staffIdHelp" class="form-text">Your unique employee or staff code.</div>
+          </div>
+
+          <!-- Name -->
+          <div class="mb-3">
+            <label for="name" class="form-label fw-medium">Full Name</label>
+            <input type="text" id="name" name="name" 
+                   class="form-control" required 
+                   placeholder="Enter your full name">
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="password" class="form-label fw-medium">Password</label>
+            <input type="password" id="password" name="password" 
+                   class="form-control" required 
+                   placeholder="Create a password" minlength="6"
+                   aria-describedby="passwordHelp">
+            <div id="passwordHelp" class="form-text">Password must be at least 6 characters long.</div>
+          </div>
+
+          <!-- Submit -->
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary fw-semibold" aria-label="Register new staff account">
+              Register
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center mt-3">
+          <p class="mb-0">Already registered? 
+            <a href="{{ url_for('routes.staff_login') }}" class="text-decoration-none fw-medium">Login here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

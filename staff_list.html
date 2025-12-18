@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Staff List</h3>
+
+<form class="mb-3" method="get" action="{{ url_for('routes.admin_manage_staff') }}">
+  <input class="form-control" name="q" placeholder="Search by name or staff ID" value="{{ q or '' }}">
+</form>
+
+<table class="table table-hover align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th>Staff ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Approved</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in staff_members %}
+    <tr>
+      <td>{{ s.staff_id or '-' }}</td>
+      <td>{{ s.name }}</td>
+      <td>{{ s.email or '-' }}</td>
+      <td>
+        {% if s.approved %}
+          <span class="badge bg-success">Yes</span>
+        {% else %}
+          <span class="badge bg-danger">No</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if not s.approved %}
+        <a class="btn btn-success btn-sm" href="{{ url_for('routes.approve_staff', id=s.id) }}">Approve</a>
+        {% endif %}
+        <a class="btn btn-danger btn-sm" href="{{ url_for('routes.reject_staff', id=s.id) }}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+    {% if not staff_members %}
+    <tr>
+      <td colspan="5" class="text-center text-muted">No staff records found.</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endblock %}

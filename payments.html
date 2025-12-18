@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg p-4 rounded-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="text-primary fw-bold">All Payments</h3>
+      <a href="{{ url_for('routes.admin_dashboard') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+      </a>
+    </div>
+
+    {% if payments %}
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Staff ID</th>
+            <th scope="col">Amount (₹)</th>
+            <th scope="col">Month</th>
+            <th scope="col">Date Recorded</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in payments %}
+          <tr>
+            <td>{{ p.staff_id }}</td>
+            <td>{{ "%.2f"|format(p.amount) }}</td>
+            <td>{{ p.month }}</td>
+            <td>
+              {% if p.created_on %}
+                {{ p.created_on.strftime('%d-%m-%Y') }}
+              {% else %}
+                <span class="text-muted">N/A</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+      No payments found in the system.
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

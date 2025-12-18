@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5 upload-payments-container">
+  <div class="card shadow-lg p-4 rounded-4">
+    <h3 class="mb-3 text-center text-primary fw-bold">Upload Payments CSV</h3>
+    <p class="text-muted text-center mb-4">
+      The CSV file must include columns: 
+      <code>staff_id</code>, <code>amount</code>, and <code>month</code>.
+    </p>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      <div class="mb-4">
+        <label for="file" class="form-label fw-semibold">Select CSV File</label>
+        <input 
+          type="file"
+          id="file"
+          name="file"
+          class="form-control"
+          accept=".csv"
+          required
+          onchange="validateFile()"
+        >
+        <small class="form-text text-muted">Only .csv files are allowed.</small>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          aria-label="Upload payments CSV">
+          <i class="bi bi-upload"></i> Upload Payments
+        </button>
+        <a href="{{ url_for('routes.admin_dashboard') }}" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function validateFile() {
+  const fileInput = document.getElementById("file");
+  const filePath = fileInput.value;
+  if (filePath && !filePath.endsWith(".csv")) {
+    alert("Please upload a valid CSV file.");
+    fileInput.value = "";
+  }
+}
+</script>
+{% endblock %}

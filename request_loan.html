@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h3 class="mb-3">Request a Loan</h3>
+  <form method="POST" id="loanForm">
+    <div class="mb-3">
+      <label for="amount" class="form-label">Loan Amount (₹)</label>
+      <input type="number" id="amount" name="amount" class="form-control" placeholder="Enter loan amount" min="1000" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="tenure" class="form-label">Select Loan Tenure</label>
+      <select id="tenure" name="tenure" class="form-select" required>
+        <option value="">-- Select Tenure --</option>
+        <option value="10">10 Months (5% Interest)</option>
+        <option value="20">20 Months (10% Interest)</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Total Payable (Auto Calculated)</label>
+      <input type="text" id="total_display" class="form-control" readonly placeholder="Will be calculated automatically">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Loan Request</button>
+  </form>
+</div>
+
+<script>
+  // 🔹 Auto calculate total with interest
+  document.addEventListener("DOMContentLoaded", function () {
+    const amountInput = document.getElementById("amount");
+    const tenureSelect = document.getElementById("tenure");
+    const totalDisplay = document.getElementById("total_display");
+
+    function calculateTotal() {
+      const amount = parseFloat(amountInput.value);
+      const tenure = parseInt(tenureSelect.value);
+
+      if (!amount || !tenure) {
+        totalDisplay.value = "";
+        return;
+      }
+
+      let interestRate = tenure === 10 ? 5 : 10;
+      const total = amount + (amount * interestRate / 100);
+      totalDisplay.value = `₹${total.toFixed(2)} (incl. ${interestRate}% interest)`;
+    }
+
+    amountInput.addEventListener("input", calculateTotal);
+    tenureSelect.addEventListener("change", calculateTotal);
+  });
+</script>
+{% endblock %}

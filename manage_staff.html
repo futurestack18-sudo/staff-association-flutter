@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h3 class="mb-4 text-center">Manage Staff</h3>
+
+  <!-- Search Form -->
+  <form class="mb-3" method="get">
+    <input 
+      type="text" 
+      class="form-control" 
+      name="q" 
+      placeholder="Search by name or Staff ID"
+      value="{{ request.args.get('q', '') }}"
+    >
+  </form>
+
+  <!-- Staff Table -->
+  <div class="table-responsive shadow-sm">
+    <table class="table table-striped align-middle">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Staff ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Approved</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in staff_members %}
+        <tr>
+          <td>{{ s.staff_id or '-' }}</td>
+          <td>{{ s.name }}</td>
+          <td>{{ s.email or '-' }}</td>
+          <td>
+            {% if s.approved %}
+              <span class="badge bg-success">Yes</span>
+            {% else %}
+              <span class="badge bg-danger">No</span>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            {% if not s.approved %}
+              <a class="btn btn-success btn-sm" href="{{ url_for('routes.approve_staff', id=s.id) }}">Approve</a>
+            {% endif %}
+            <a class="btn btn-danger btn-sm" href="{{ url_for('routes.reject_staff', id=s.id) }}">Delete</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center text-muted">No staff records found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Back Button -->
+  <div class="text-center mt-3">
+    <a href="{{ url_for('routes.admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

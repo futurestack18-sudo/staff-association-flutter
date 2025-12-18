@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-3">Pending Loan Requests</h2>
+
+  {% if loans %}
+  <table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Staff ID</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Requested On</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for l in loans %}
+      <tr>
+        <td>{{ l.id }}</td>
+        <td>{{ l.staff_id }}</td>
+        <td>₹{{ "%.2f"|format(l.amount) }}</td>
+        <td>
+          {% if l.status == 'pending' %}
+            <span class="badge bg-warning text-dark">Pending</span>
+          {% elif l.status == 'approved' %}
+            <span class="badge bg-success">Approved</span>
+          {% elif l.status == 'rejected' %}
+            <span class="badge bg-danger">Rejected</span>
+          {% endif %}
+        </td>
+        <td>{{ l.requested_on.strftime('%Y-%m-%d') }}</td>
+        <td>
+          <a class="btn btn-sm btn-success" 
+             href="{{ url_for('routes.admin_loan_approve', id=l.id) }}">Approve</a>
+          <a class="btn btn-sm btn-danger" 
+             href="{{ url_for('routes.admin_loan_reject', id=l.id) }}">Reject</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="alert alert-info mt-3">
+    No pending loan requests at the moment.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

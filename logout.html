@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0d6efd 0%, #1a73e8 100%);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .logout-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .logout-card {
+      background-color: rgba(0, 0, 0, 0.55);
+      -webkit-backdrop-filter: blur(6px); /* ✅ Safari first */
+      backdrop-filter: blur(6px);         /* ✅ Standard next */
+      padding: 40px 60px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .logout-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .logout-message {
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+      color: #e0e0e0;
+    }
+
+    .logout-btn {
+      background-color: #0d6efd;
+      border: none;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 10px 25px;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #0b5ed7;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .logout-card {
+        padding: 30px 25px;
+      }
+      .logout-title {
+        font-size: 1.5rem;
+      }
+      .logout-message {
+        font-size: 1rem;
+      }
+    }
+  </style>
+
+  <div class="logout-page" role="region" aria-label="Logout Confirmation">
+    <div class="logout-card">
+      <h2 class="logout-title">You have been logged out</h2>
+      <p class="logout-message">
+        Thank you for using the portal, <strong>{{ user_type }}</strong>.
+      </p>
+      <a href="{{ login_url }}" class="btn btn-primary logout-btn" role="button" aria-label="Return to login page">
+        Back to Login
+      </a>
+    </div>
+  </div>
+{% endblock %}
